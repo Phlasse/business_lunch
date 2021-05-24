@@ -1,2 +1,2 @@
-restaurant_id;name;street;number;zip_code;lat;lon;type;opening;closing;vegetarian;vegan
-1;Berlin Burrito Company;Kastanienallee;59;10119;52.5329216;13.401469;mexican;12:00;22:00;1;1
+restaurant_id;name;street;number;zip_code;type;opening;closing;vegetarian;vegan
+1;Berlin Burrito Company;Kastanienallee;59;10119;mexican;12:00;22:00;1;1
