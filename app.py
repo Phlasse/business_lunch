@@ -16,19 +16,22 @@ def get_latlo(address):
     loc_stats = (location.latitude, location.longitude)
     return loc_stats
 
+img_business_lunch = Image.open("data/business_lunch_logo.jpg")
+st.sidebar.image(img_business_lunch, width=120)
+
 restaurant_df = pd.read_csv('data/restaurants.csv', sep=';')
 st.header("Welcome to Business Lunch")
 
 function = st.sidebar.radio(
     "What do your want to do?",
-    ('Home', 'Get Recommendation', 'Add Restaurant', 'Add a Dish'))
+    ('Home', 'Get Recommendation', 'Add Restaurant', 'Add a Dish', 'Rate a restaurant', 'Show Data'))
 st.sidebar.write("\n----------------\n")
-#### Home config ####
+#### Home config ############################################################################
 
 if function == 'Home':
     st.write("Thanks for choosing Business Lunch")
 
-#### Get Recommendation #####
+#### Get Recommendation ############################################################################
 elif function == 'Get Recommendation':
     Rosenthaler_lat = 52.5313683
     Rosenthaler_lon = 13.4
@@ -53,7 +56,7 @@ elif function == 'Get Recommendation':
         folium_static(m)
    
     
-#### Ad Restaurant ####    
+#### Ad Restaurant ############################################################################    
 elif function == 'Add Restaurant':
     st.subheader("Which restaurant do you want to add?")
     name_input = st.text_input("Name of Restaurant")
@@ -82,7 +85,7 @@ elif function == 'Add Restaurant':
         new_line_df = pd.DataFrame([[0,name_input,street_input,number_input,zip_input,type_input,0,0,vegetarian,vegan]],columns = restaurant_df.columns.to_list())
         st.write(new_line_df)        
         
-#### Add Dish ####
+#### Add Dish ######################################################################
 elif function == 'Add a Dish':
     st.write("Which dish do you want to add?")
 
@@ -97,3 +100,12 @@ elif function == 'Add a Dish':
     cancel_rest_add = st.sidebar.button("cancel adding")
     if cancel_rest_add:
         add_rest=False
+
+
+#### Rate a Restaurant ######################################################################
+elif function == 'Rate a restaurant':
+    st.write(restaurant_df)
+
+#### Show Data ######################################################################
+elif function == 'Show Data':
+    st.write(restaurant_df)
