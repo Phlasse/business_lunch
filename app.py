@@ -2,21 +2,23 @@ import streamlit as st
 import pandas as pd
 import time
 import datetime
-import requests
 import geopy
 from geopy.geocoders import Nominatim
 from streamlit_folium import folium_static
 import folium
 from PIL import Image
+import random
+
 
 def get_latlo(address):
     geolocator = Nominatim(user_agent="busy")
     location = geolocator.geocode(address)
-    print(location)
     loc_stats = (location.latitude, location.longitude)
     return loc_stats
+
 Rosenthaler_lat = 52.5313683
 Rosenthaler_lon = 13.4
+
 img_business_lunch = Image.open("data/business_lunch_logo.jpg")
 st.sidebar.image(img_business_lunch, width=120)
 
@@ -25,7 +27,7 @@ restaurant_df = pd.read_csv('data/restaurants.csv', sep=',')
 function = st.sidebar.radio(
     "What do your want to do?",
     ('Home', 'Get Recommendation', 'Add Restaurant', 'Add a Dish', 'Rate a restaurant', 'Show Data'))
-st.sidebar.write("\n----------------\n")
+st.sidebar.write("----------------")
 #### Home config ############################################################################
 
 if function == 'Home':
@@ -44,7 +46,7 @@ if function == 'Home':
 
 #### Get Recommendation ############################################################################
 elif function == 'Get Recommendation':
-    
+    choice_df = restaurant_df
     st.subheader('Let me help you to find a business lunch around Rosenthaler Platz.')
     st.sidebar.write("\n Let's set some preferences.\n")
     diet = st.sidebar.radio(
@@ -53,17 +55,41 @@ elif function == 'Get Recommendation':
     )
     fancy = st.sidebar.radio(
         "How fancy should it be?",
-        ("Give me sth quick and cheap [<7 💶]", "Some decent food [<12 💶]", "A bit nicer please [10+ 💶]"))
+        ("Give me sth quick and cheap 💶", "Some decent food 💶💶", "A bit nicer please 💶💶💶"))
     recommend = st.sidebar.button("Give me the recommendation")
+    
+    if diet == "Vegetarians present 🌯":
+        veggi_rec = 1
+        vegan_rec = 0
+    elif diet =="Vegans present 🥗":
+        veggi_rec = 1
+        vegan_rec = 1
+    else:
+        veggi_rec = 0
+        vegan_rec = 0
+        
+    if fancy == "Give me sth quick and cheap 💶":
+        choice_df = choice_df[choice_df.price == 1]
+    elif fancy == "Some decent food 💶💶":
+        choice_df = choice_df[choice_df.price == 2]
+    else:
+        choice_df = choice_df[choice_df.price == 3]
+    
     if recommend:
-        choice_df = restaurant_df
-        st.write(choice_df.head(5)[['name','street','number','type']])
+        choice_df = choice_df.reset_index()
+        random_num = random.choice(choice_df.index.to_list())
+        st.subheader("... and here is your suggestions 🍽")
+        st.write(choice_df.name[random_num])
+        st.write(choice_df.street[random_num], choice_df.number[random_num])
+        st.write(choice_df.type[random_num]+" restaurant")
+        
         m = folium.Map(location=[Rosenthaler_lat, Rosenthaler_lon], zoom_start=16, tiles="openstreetmap")
-    #folium.Rectangle(bounds=points, color='#5dbb63', fill=True, fill_color='5dbb63', fill_opacity=0.1).add_to(m)
         pin2 = "Restaurant Location"
-        lat1, lon1 = get_latlo(choice_df.street[0]+' '+str(choice_df.number[0])+', '+str(choice_df.zip_code[0])+', Berlin')
-        folium.Marker([lat1, lon1], popup=choice_df.name[0], tooltip=pin2).add_to(m)
+        lat1, lon1 = get_latlo(choice_df.street[random_num]+' '+str(choice_df.number[random_num])+', '+str(choice_df.zip_code[random_num])+', Berlin')
+        folium.Marker([lat1, lon1], popup=choice_df.name[random_num], tooltip=pin2).add_to(m)
         folium_static(m)
+        st.write(choice_df.head(5)[['name','street','number','type']])
+
    
     
 #### Ad Restaurant ############################################################################    
@@ -80,7 +106,7 @@ elif function == 'Add Restaurant':
     )
     fancy = st.radio(
         "How fancy is it??",
-        ("It is sth quick and cheap [<7 💶]", "It has decent food [<12 💶]", "It is a bit nicer. [10+ 💶]"))
+        ("It is sth quick and cheap 💶", "It has decent food 💶💶", "It is a bit nicer 💶💶💶"))
     if diet == "Vegetarian":
         vegetarian = 1
         vegan = 0
@@ -90,6 +116,14 @@ elif function == 'Add Restaurant':
     else:
         vegetarian = 0
         vegan = 0
+        
+    if fancy == "It is sth quick and cheap 💶":
+        price = 1
+    elif fancy == "It has decent food 💶💶":
+        price = 2
+    elif fancy == "It is a bit nicer 💶💶💶":
+        price = 3
+    
     opening = st.time_input("When does this restaurant open?", value=datetime.datetime(2021, 10, 6, 12, 00, 20))
     closing = st.time_input("When does this restaurant close?", value=datetime.datetime(2021, 10, 6, 21, 00, 20))
     id = int(restaurant_df.restaurant_id[len(restaurant_df)-1]) +1
@@ -99,7 +133,7 @@ elif function == 'Add Restaurant':
         confirm_rest = st.sidebar.button("Confirm")
 
         if confirm_rest:
-            new_line_df = pd.DataFrame([[id,name_input,street_input,number_input,zip_input,type_input,opening,closing,vegetarian,vegan]],columns = restaurant_df.columns.to_list())
+            new_line_df = pd.DataFrame([[id,name_input,street_input,number_input,zip_input,type_input,opening,closing,vegetarian,vegan, price]],columns = restaurant_df.columns.to_list())
             restaurant_df = pd.concat([restaurant_df, new_line_df])
             restaurant_df.to_csv("data/restaurants.csv", index=False)
             

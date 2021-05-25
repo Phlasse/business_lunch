@@ -1,4 +1,5 @@
-restaurant_id,name,street,number,zip_code,type,opening,closing,vegetarian,vegan
-1,Berlin Burrito Company,Kastanienallee,59,10119,mexican,12:00,22:00,1,1
-2,Curry Mitte,Torstraße,122,10119,German,11:30:00,20:00:00,1,1
-3,Papà Pane di Sorrento,Ackerstraße,23,10115,italian,12:00:00,00:00:00,1,0
+restaurant_id,name,street,number,zip_code,type,opening,closing,vegetarian,vegan,price
+1,Berlin Burrito Company,Kastanienallee,59,10119,mexican,12:00,22:00,1,1,2
+2,Curry Mitte,Torstraße,122,10119,german,11:30:00,20:00:00,1,1,2
+3,Papà Pane di Sorrento,Ackerstraße,23,10115,italian,12:00:00,00:00:00,1,0,3
+4,Rosenthaler Grill und Schlemmerbuffet,Torstraße,125,10119,mixed,08:00:00,00:00:00,1,0,1
