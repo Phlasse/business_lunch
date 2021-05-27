@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import time
 import datetime
+from datetime import datetime
 import geopy
 from geopy.geocoders import Nominatim
 from streamlit_folium import folium_static
@@ -23,10 +24,12 @@ img_business_lunch = Image.open("data/business_lunch_logo.jpg")
 st.sidebar.image(img_business_lunch, width=120)
 
 restaurant_df = pd.read_csv('data/restaurants.csv', sep=',')
+ratings_df = pd.read_csv("data/ratings.csv", sep=',')
+
 
 function = st.sidebar.radio(
     "What do your want to do?",
-    ('Home', 'Get Recommendation', 'Add Restaurant', 'Add a Dish', 'Rate a restaurant', 'Show Data'))
+    ('Home', 'Get Recommendation', 'Add Restaurant','Rate a restaurant', 'Explore Data'))
 st.sidebar.write("----------------")
 #### Home config ############################################################################
 
@@ -137,16 +140,27 @@ elif function == 'Add Restaurant':
             restaurant_df = pd.concat([restaurant_df, new_line_df])
             restaurant_df.to_csv("data/restaurants.csv", index=False)
             
-#### Add Dish ######################################################################
-elif function == 'Add a Dish':
-    st.warning("This Feature does not work yet")
-
-
 #### Rate a Restaurant ######################################################################
 elif function == 'Rate a restaurant':
-    st.warning("This Feature does not work yet")
+    restaurant = st.selectbox("Which restaurant would you like to rate?", restaurant_df.name.to_list())
+    restaurant_id = int(restaurant_df[restaurant_df.name == restaurant].restaurant_id)
+    rating_id = int(ratings_df.rating_id[len(ratings_df)-1]) +1
+    
+    stars = st.slider(f"How would you like to rate the restaurant?",1, 5, 3)    
+    st.write('⭐️'*stars)
+    
+    now = datetime.now()
 
+    confirm_rating = st.button("Confirm")
+
+    if confirm_rating:
+        new_line_df = pd.DataFrame([[rating_id,restaurant_id,stars,now]],columns = ratings_df.columns.to_list())
+        ratings_df = pd.concat([ratings_df, new_line_df])
+        ratings_df.to_csv("data/ratings.csv", index=False)
+        st.success("Thanks! You submitted your rating. 🥑")
+    
 #### Show Data ######################################################################
-elif function == 'Show Data':
-    st.warning("This Feature does not work yet")
+elif function == 'Explore Data':
     st.write(restaurant_df)
+    st.write(ratings_df)
+
