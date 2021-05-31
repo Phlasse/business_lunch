@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import time
 import datetime
-from datetime import datetime
+#from datetime import datetime
 import geopy
 from geopy.geocoders import Nominatim
 from streamlit_folium import folium_static
@@ -149,7 +149,7 @@ elif function == 'Rate a restaurant':
     stars = st.slider(f"How would you like to rate the restaurant?",1, 5, 3)    
     st.write('⭐️'*stars)
     
-    now = datetime.now()
+    now = datetime.datetime.now()
 
     confirm_rating = st.button("Confirm")
 
