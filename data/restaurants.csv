@@ -3,3 +3,6 @@ restaurant_id,name,street,number,zip_code,type,opening,closing,vegetarian,vegan,
 2,Curry Mitte,Torstraße,122,10119,german,11:30:00,20:00:00,1,1,2
 3,Papà Pane di Sorrento,Ackerstraße,23,10115,italian,12:00:00,00:00:00,1,0,3
 4,Rosenthaler Grill und Schlemmerbuffet,Torstraße,125,10119,mixed,08:00:00,00:00:00,1,0,1
+5,Thai Ha - New Generation,Brunnenstraße,4,10119,vietnamese,11:30:00,20:00:00,1,1,1
+6,Van Anh Quan vietnamese food,Brunnenstraße,182,10119,vietnamese,11:00:00,06:00:00,1,1,2
+7,Rosenburger,Brunnenstraße,196,10119,burger,11:00:00,01:00:00,1,1,2
