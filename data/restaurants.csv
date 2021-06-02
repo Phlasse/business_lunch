@@ -6,3 +6,4 @@ restaurant_id,name,street,number,zip_code,type,opening,closing,vegetarian,vegan,
 5,Thai Ha - New Generation,Brunnenstraße,4,10119,vietnamese,11:30:00,20:00:00,1,1,1
 6,Van Anh Quan vietnamese food,Brunnenstraße,182,10119,vietnamese,11:00:00,06:00:00,1,1,2
 7,Rosenburger,Brunnenstraße,196,10119,burger,11:00:00,01:00:00,1,1,2
+8,WRAPUBLIC ,Torstraße,118,10119,Fingerfood Fusion,13:30:00,20:00:00,1,0,2
