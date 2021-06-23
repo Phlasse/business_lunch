@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import time
 import datetime
-#from datetime import datetime
 import geopy
 from geopy.geocoders import Nominatim
 from streamlit_folium import folium_static
